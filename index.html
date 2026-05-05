@@ -30,7 +30,7 @@
         #lock-screen {
             position: fixed;
             inset: 0;
-            background-color: var(--doxus-text); /* Fondo oscuro para resaltar logo */
+            background-color: var(--doxus-text);
             z-index: 9999;
             display: flex;
             flex-direction: column;
@@ -78,16 +78,6 @@
             z-index: 50;
             background-color: #262a36;
             border-bottom: 3px solid var(--doxus-accent);
-        }
-
-        .disclaimer-banner {
-            background-color: #1a1d26;
-            color: white;
-            text-align: center;
-            font-size: 0.75rem;
-            padding: 0.5rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
         }
 
         .card-doxus {
@@ -149,7 +139,6 @@
             object-fit: contain;
         }
 
-        /* Logo más grande para el Login */
         .logo-img-large {
             max-height: 120px;
             width: auto;
@@ -176,7 +165,6 @@
     <!-- Pantalla de Bloqueo -->
     <div id="lock-screen">
         <div class="login-card">
-            <!-- Logo más grande en pantalla de inicio -->
             <img src="logo.png" alt="Doxus Logo" class="logo-img-large mx-auto mb-8" onerror="this.style.display='none'; document.getElementById('lock-fallback-logo').style.display='flex';">
             <div id="lock-fallback-logo" style="display:none;" class="w-20 h-20 bg-[#Ffbc06] rounded-2xl items-center justify-center font-bold text-3xl mx-auto mb-8 text-[#262a36]">D</div>
             
@@ -192,10 +180,6 @@
 
     <!-- Contenido Protegido -->
     <div id="main-content">
-        <div class="disclaimer-banner">
-            Esta es una versión ejecutiva de un dictamen más grande.
-        </div>
-
         <!-- Navigation con Fondo Oscuro -->
         <nav class="sticky-nav px-6 py-4 flex justify-between items-center text-white">
             <div class="flex items-center gap-3">
@@ -407,11 +391,14 @@
 
         </main>
 
-        <footer class="bg-[#262a36] text-white py-12 px-6">
+        <footer class="bg-[#262a36] text-white py-12 px-6 border-t-4 border-[#Ffbc06]">
             <div class="max-w-5xl mx-auto text-center flex flex-col items-center">
-                <p class="text-sm text-gray-400 mb-6">Esta es una versión ejecutiva de un dictamen más grande.</p>
+                <!-- Disclaimer Actualizado según solicitud -->
+                <p class="text-xs md:text-sm text-gray-300 mb-8 leading-relaxed max-w-3xl">
+                    LA INFORMACIÓN PRESENTADA AQUÍ ES UN RESUMEN GENERAL DE LA OPERACIÓN QUE FUE REFERIDA PARA SU REVISIÓN. SE RECOMIENDA CONSULTAR CADA CONTRATO RELACIONADO Y COMENTAR CON EL PROFESIONISTA DE SU CONFIANZA EL ALCANCE DE LAS DECISIONES.
+                </p>
                 
-                <img src="logo.png" alt="Logo" class="logo-img mb-4 grayscale brightness-200" onerror="this.style.display='none';">
+                <img src="logo.png" alt="Logo" class="logo-img mb-6" onerror="this.style.display='none';">
                 
                 <div class="w-12 h-1 bg-[#Ffbc06] mb-6"></div>
                 <p class="font-bold text-lg tracking-widest uppercase">Maximiliano Aréchiga-Morales</p>
