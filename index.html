@@ -22,19 +22,63 @@
             background-color: var(--doxus-bg);
             color: var(--doxus-text);
             scroll-behavior: smooth;
+            margin: 0;
+            overflow: hidden; /* Bloquea el scroll hasta que se autentique */
         }
 
+        /* Capa de Seguridad */
+        #lock-screen {
+            position: fixed;
+            inset: 0;
+            background-color: var(--doxus-bg);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            transition: opacity 0.5s ease-out;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .password-input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid var(--doxus-gray);
+            border-radius: 0.75rem;
+            margin: 1.5rem 0;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .password-input:focus {
+            border-color: var(--doxus-accent);
+        }
+
+        /* Contenido principal */
+        #main-content {
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.5s ease-in;
+        }
+
+        /* Cintilla Principal Oscura */
         .sticky-nav {
             position: sticky;
             top: 0;
             z-index: 50;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-bottom: 2px solid var(--doxus-gray);
+            background-color: #262a36; /* Azul Doxus solicitado */
+            border-bottom: 3px solid var(--doxus-accent);
         }
 
         .disclaimer-banner {
-            background-color: var(--doxus-text);
+            background-color: #1a1d26;
             color: white;
             text-align: center;
             font-size: 0.75rem;
@@ -96,247 +140,312 @@
             font-size: 0.9rem;
         }
 
-        /* Estilo para el logo */
         .logo-img {
-            max-height: 40px;
+            max-height: 45px;
             width: auto;
             object-fit: contain;
+        }
+
+        .btn-doxus {
+            background-color: var(--doxus-accent);
+            color: var(--doxus-text);
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 700;
+            width: 100%;
+            transition: all 0.2s;
+        }
+
+        .btn-doxus:hover {
+            filter: brightness(1.1);
         }
     </style>
 </head>
 <body>
 
-    <!-- Top Disclaimer -->
-    <div class="disclaimer-banner">
-        Esta es una versión ejecutiva de un dictamen más grande.
+    <!-- Pantalla de Bloqueo -->
+    <div id="lock-screen">
+        <div class="login-card">
+            <img src="logo.png" alt="Doxus Logo" class="logo-img mx-auto mb-6" onerror="this.style.display='none'; document.getElementById('lock-fallback-logo').style.display='flex';">
+            <div id="lock-fallback-logo" style="display:none;" class="w-16 h-16 bg-[#Ffbc06] rounded-xl items-center justify-center font-bold text-2xl mx-auto mb-6 text-[#262a36]">D</div>
+            
+            <h2 class="text-2xl font-bold text-[#262a36]">Acceso Restringido</h2>
+            <p class="text-gray-500 text-sm mt-2">Por favor, ingrese la contraseña para visualizar este dictamen ejecutivo.</p>
+            
+            <input type="password" id="pass-input" class="password-input" placeholder="Contraseña" autofocus>
+            
+            <button onclick="checkPassword()" class="btn-doxus shadow-lg">Entrar</button>
+            <p id="error-msg" class="text-red-500 text-xs mt-4 opacity-0 transition-opacity">Contraseña incorrecta. Intente de nuevo.</p>
+        </div>
     </div>
 
-    <!-- Navigation -->
-    <nav class="sticky-nav px-6 py-4 flex justify-between items-center">
-        <div class="flex items-center gap-3">
-            <!-- Espacio para Logo -->
-            <img src="logo.png" alt="Doxus Logo" class="logo-img" onerror="this.style.display='none'; document.getElementById('fallback-logo').style.display='flex';">
-            <div id="fallback-logo" style="display:none;" class="w-10 h-10 bg-[#Ffbc06] rounded-md items-center justify-center font-bold">D</div>
-            
-            <span class="font-bold text-xl tracking-tighter">DOXUS <span class="font-light text-gray-400">| DICTAMEN</span></span>
+    <!-- Contenido Protegido -->
+    <div id="main-content">
+        <div class="disclaimer-banner">
+            Esta es una versión ejecutiva de un dictamen más grande.
         </div>
-        <div class="hidden md:flex gap-6 text-sm font-semibold">
-            <a href="#inventario" class="hover:text-[#d49f20]">Inventario</a>
-            <a href="#analisis" class="hover:text-[#d49f20]">Análisis</a>
-            <a href="#pagos" class="hover:text-[#d49f20]">Finanzas</a>
-            <a href="#diagnostico" class="hover:text-[#d49f20]">Diagnóstico</a>
-            <a href="#recomendaciones" class="hover:text-[#d49f20]">Recomendaciones</a>
-        </div>
-    </nav>
 
-    <main class="max-w-5xl mx-auto px-6 py-12">
-        
-        <!-- Main Title Section -->
-        <section class="mb-12">
-            <h2 class="text-[#d49f20] font-bold mb-2 uppercase tracking-wide">Clave del Contrato</h2>
-            <h1 class="text-3xl md:text-5xl font-extrabold mb-6 text-[#262a36]">Revisión general de contrato de promesa BORBOLETA_MPC&VHCR</h1>
-            <div class="w-24 h-1 bg-[#Ffbc06] rounded"></div>
-        </section>
-
-        <!-- Módulo 1: Inventario -->
-        <section id="inventario" class="mb-12">
-            <h3 class="text-2xl font-bold mb-6 flex items-center gap-3">
-                <span class="bg-[#262a36] text-white px-3 py-1 rounded text-sm">MÓDULO 1</span>
-                Análisis para Dictaminación
-            </h3>
-            
-            <div class="card-doxus overflow-hidden">
-                <div class="p-4 bg-gray-100 font-bold text-sm uppercase">1. Tabla de Inventario de Documentos</div>
-                <div class="table-container">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Tipo de Documento</th>
-                                <th>Emisor</th>
-                                <th>Fecha</th>
-                                <th>Resumen</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="font-bold">DOC-01</td>
-                                <td>Carátula y Contrato de Compraventa</td>
-                                <td>Desarrolladora El Capulín, S.A. de C.V.</td>
-                                <td>01/mar/2025</td>
-                                <td>Términos, precio de $5,314,950.00 y Unidad 42.</td>
-                            </tr>
-                            <tr>
-                                <td class="font-bold">DOC-02</td>
-                                <td>Notificación Cambio Cuenta</td>
-                                <td>Desarrolladora El Capulín, S.A. de C.V.</td>
-                                <td>17/sep/2025</td>
-                                <td>Pagos al Fideicomiso 21/2015 desde 22/sep/2025.</td>
-                            </tr>
-                            <tr>
-                                <td class="font-bold">DOC-03</td>
-                                <td>Comunicado de Retraso</td>
-                                <td>Construvida (R. Hernández Valverde)</td>
-                                <td>11/nov/2025</td>
-                                <td>Prórroga para el 2do bimestre de 2026.</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
-
-        <!-- Partes Involucradas -->
-        <section class="grid md:grid-cols-2 gap-6 mb-12">
-            <div class="card-doxus p-6 accent-border">
-                <h4 class="font-bold mb-4 text-[#d49f20]">2. Partes Involucradas</h4>
-                <div class="space-y-4">
-                    <div>
-                        <p class="text-xs text-gray-500 uppercase font-bold">Vendedor</p>
-                        <p class="font-semibold text-[#262a36]">Desarrolladora El Capulín, S.A. de C.V.</p>
-                        <p class="text-sm">Representante: Ing. José Arturo Álvarez Centeno</p>
-                    </div>
-                    <div>
-                        <p class="text-xs text-gray-500 uppercase font-bold">Comprador</p>
-                        <p class="font-semibold text-[#262a36]">Marianela Palomera Cárdenas & Victor Hugo Castillo Ramos</p>
-                    </div>
-                </div>
-            </div>
-            <div class="card-doxus p-6">
-                <h4 class="font-bold mb-4 text-[#d49f20]">Testigos del Acto</h4>
-                <ul class="text-sm space-y-2">
-                    <li class="flex items-center gap-2">
-                        <span class="w-2 h-2 bg-gray-400 rounded-full"></span> Valeria Martínez Vázquez
-                    </li>
-                    <li class="flex items-center gap-2">
-                        <span class="w-2 h-2 bg-gray-400 rounded-full"></span> Nora Haro (Firma: Nora Angelica Auro C.)
-                    </li>
-                </ul>
-            </div>
-        </section>
-
-        <!-- Finanzas -->
-        <section id="pagos" class="mb-12">
-            <div class="highlight-yellow p-8 rounded-2xl shadow-xl">
-                <h3 class="text-2xl font-bold mb-6 text-[#262a36]">3. Contraprestación y Forma de Pago</h3>
-                <div class="grid md:grid-cols-3 gap-8">
-                    <div>
-                        <p class="text-3xl font-black text-[#262a36]">$5,314,950.00</p>
-                        <p class="text-sm uppercase font-bold opacity-70">Precio Total MXN</p>
-                    </div>
-                    <div class="col-span-2 space-y-3">
-                        <div class="flex justify-between border-b border-[#262a36]/20 pb-2">
-                            <span>Enganche Inicial</span>
-                            <span class="font-bold">$265,747.50 (Acumulado)</span>
-                        </div>
-                        <div class="flex justify-between border-b border-[#262a36]/20 pb-2">
-                            <span>Mensualidades (Abr 25 - Feb 26)</span>
-                            <span class="font-bold">Varía ($26,574.75 prom.)</span>
-                        </div>
-                        <div class="flex justify-between text-[#262a36]">
-                            <span class="font-bold">Pago Final (Escrituración)</span>
-                            <span class="font-bold text-xl">$4,517,707.50</span>
-                        </div>
-                    </div>
-                </div>
+        <!-- Navigation con Fondo Oscuro -->
+        <nav class="sticky-nav px-6 py-4 flex justify-between items-center text-white">
+            <div class="flex items-center gap-3">
+                <img src="logo.png" alt="Logo" class="logo-img" onerror="this.style.display='none'; document.getElementById('fallback-logo').style.display='flex';">
+                <div id="fallback-logo" style="display:none;" class="w-10 h-10 bg-[#Ffbc06] rounded-md items-center justify-center font-bold text-[#262a36]">D</div>
                 
-                <div class="mt-8 p-4 bg-white rounded-lg border border-[#262a36]/10">
-                    <p class="text-xs font-bold text-[#262a36] mb-2 uppercase opacity-60">Cuenta de Pago Actualizada</p>
-                    <div class="grid md:grid-cols-2 text-sm text-[#262a36]">
-                        <p><strong>Banco:</strong> BBVA</p>
-                        <p><strong>CLABE:</strong> 012914002024992153</p>
-                        <p class="md:col-span-2"><strong>Titular:</strong> PROMOTORA PROFILE S.A.P.I DE C.V.</p>
+                <!-- Retirado nombre DOXUS, solo queda el identificador -->
+                <span class="font-bold text-xl tracking-tighter">
+                    <span class="font-light text-gray-400">| DICTAMEN</span>
+                </span>
+            </div>
+            <div class="hidden md:flex gap-6 text-sm font-semibold uppercase tracking-wider">
+                <a href="#inventario" class="hover:text-[#Ffbc06] transition-colors">Inventario</a>
+                <a href="#analisis" class="hover:text-[#Ffbc06] transition-colors">Análisis</a>
+                <a href="#pagos" class="hover:text-[#Ffbc06] transition-colors">Finanzas</a>
+                <a href="#diagnostico" class="hover:text-[#Ffbc06] transition-colors">Diagnóstico</a>
+                <a href="#recomendaciones" class="hover:text-[#Ffbc06] transition-colors">Recomendaciones</a>
+            </div>
+        </nav>
+
+        <main class="max-w-5xl mx-auto px-6 py-12">
+            
+            <!-- Main Title Section -->
+            <section class="mb-12">
+                <h2 class="text-[#d49f20] font-bold mb-2 uppercase tracking-wide">Clave del Contrato</h2>
+                <h1 class="text-3xl md:text-5xl font-extrabold mb-6 text-[#262a36]">Revisión general de contrato de promesa BORBOLETA_MPC&VHCR</h1>
+                <div class="w-24 h-1 bg-[#Ffbc06] rounded"></div>
+            </section>
+
+            <!-- Módulo 1: Inventario -->
+            <section id="inventario" class="mb-12 scroll-mt-24">
+                <h3 class="text-2xl font-bold mb-6 flex items-center gap-3">
+                    <span class="bg-[#262a36] text-white px-3 py-1 rounded text-sm">MÓDULO 1</span>
+                    Análisis para Dictaminación
+                </h3>
+                
+                <div class="card-doxus overflow-hidden">
+                    <div class="p-4 bg-gray-100 font-bold text-sm uppercase">1. Tabla de Inventario de Documentos</div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Tipo de Documento</th>
+                                    <th>Emisor</th>
+                                    <th>Fecha</th>
+                                    <th>Resumen</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="font-bold">DOC-01</td>
+                                    <td>Carátula y Contrato de Compraventa</td>
+                                    <td>Desarrolladora El Capulín, S.A. de C.V.</td>
+                                    <td>01/mar/2025</td>
+                                    <td>Términos, precio de $5,314,950.00 y Unidad 42.</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-bold">DOC-02</td>
+                                    <td>Notificación Cambio Cuenta</td>
+                                    <td>Desarrolladora El Capulín, S.A. de C.V.</td>
+                                    <td>17/sep/2025</td>
+                                    <td>Pagos al Fideicomiso 21/2015 desde 22/sep/2025.</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-bold">DOC-03</td>
+                                    <td>Comunicado de Retraso</td>
+                                    <td>Construvida (R. Hernández Valverde)</td>
+                                    <td>11/nov/2025</td>
+                                    <td>Prórroga para el 2do bimestre de 2026.</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <!-- Penalidades -->
-        <section class="mb-12">
-            <div class="grid md:grid-cols-2 gap-6">
-                <div class="card-doxus p-6 border-l-4 border-red-500">
-                    <h4 class="font-bold text-red-600 mb-4">4. Penalidades y Rescisión</h4>
-                    <ul class="text-sm space-y-3">
-                        <li><strong>Mora Comprador:</strong> 0.05% diario sobre saldo atrasado.</li>
-                        <li><strong>Pena Convencional:</strong> 10% del precio total por incumplimiento.</li>
-                        <li class="bg-red-50 p-2 rounded"><strong>Causales:</strong> Falta de 2 pagos consecutivos o 60 días de demora en 3 pagos no consecutivos.</li>
+            <!-- Partes Involucradas -->
+            <section id="analisis" class="grid md:grid-cols-2 gap-6 mb-12 scroll-mt-24">
+                <div class="card-doxus p-6 accent-border">
+                    <h4 class="font-bold mb-4 text-[#d49f20]">2. Partes Involucradas</h4>
+                    <div class="space-y-4">
+                        <div>
+                            <p class="text-xs text-gray-500 uppercase font-bold">Vendedor</p>
+                            <p class="font-semibold text-[#262a36]">Desarrolladora El Capulín, S.A. de C.V.</p>
+                            <p class="text-sm">Representante: Ing. José Arturo Álvarez Centeno</p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-500 uppercase font-bold">Comprador</p>
+                            <p class="font-semibold text-[#262a36]">Marianela Palomera Cárdenas & Victor Hugo Castillo Ramos</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-doxus p-6">
+                    <h4 class="font-bold mb-4 text-[#d49f20]">Testigos del Acto</h4>
+                    <ul class="text-sm space-y-2">
+                        <li class="flex items-center gap-2">
+                            <span class="w-2 h-2 bg-gray-400 rounded-full"></span> Valeria Martínez Vázquez
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="w-2 h-2 bg-gray-400 rounded-full"></span> Nora Haro (Firma: Nora Angelica Auro C.)
+                        </li>
                     </ul>
                 </div>
+            </section>
+
+            <!-- Finanzas -->
+            <section id="pagos" class="mb-12 scroll-mt-24">
+                <div class="highlight-yellow p-8 rounded-2xl shadow-xl">
+                    <h3 class="text-2xl font-bold mb-6 text-[#262a36]">3. Contraprestación y Forma de Pago</h3>
+                    <div class="grid md:grid-cols-3 gap-8">
+                        <div>
+                            <p class="text-3xl font-black text-[#262a36]">$5,314,950.00</p>
+                            <p class="text-sm uppercase font-bold opacity-70">Precio Total MXN</p>
+                        </div>
+                        <div class="col-span-2 space-y-3">
+                            <div class="flex justify-between border-b border-[#262a36]/20 pb-2">
+                                <span>Enganche Inicial</span>
+                                <span class="font-bold">$265,747.50 (Acumulado)</span>
+                            </div>
+                            <div class="flex justify-between border-b border-[#262a36]/20 pb-2">
+                                <span>Mensualidades (Abr 25 - Feb 26)</span>
+                                <span class="font-bold">Varía ($26,574.75 prom.)</span>
+                            </div>
+                            <div class="flex justify-between text-[#262a36]">
+                                <span class="font-bold">Pago Final (Escrituración)</span>
+                                <span class="font-bold text-xl">$4,517,707.50</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8 p-4 bg-white rounded-lg border border-[#262a36]/10">
+                        <p class="text-xs font-bold text-[#262a36] mb-2 uppercase opacity-60">Cuenta de Pago Actualizada</p>
+                        <div class="grid md:grid-cols-2 text-sm text-[#262a36]">
+                            <p><strong>Banco:</strong> BBVA</p>
+                            <p><strong>CLABE:</strong> 012914002024992153</p>
+                            <p class="md:col-span-2"><strong>Titular:</strong> PROMOTORA PROFILE S.A.P.I DE C.V.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Penalidades e Hitos -->
+            <section class="mb-12">
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="card-doxus p-6 border-l-4 border-red-500">
+                        <h4 class="font-bold text-red-600 mb-4">4. Penalidades y Rescisión</h4>
+                        <ul class="text-sm space-y-3">
+                            <li><strong>Mora Comprador:</strong> 0.05% diario sobre saldo atrasado.</li>
+                            <li><strong>Pena Convencional:</strong> 10% del precio total por incumplimiento.</li>
+                            <li class="bg-red-50 p-2 rounded"><strong>Causales:</strong> Falta de 2 pagos consecutivos o 60 días de demora en 3 pagos no consecutivos.</li>
+                        </ul>
+                    </div>
+                    
+                    <div id="hitos" class="card-doxus p-6">
+                        <h4 class="font-bold mb-4 text-[#262a36]">5. Línea de Tiempo y Hitos</h4>
+                        <div class="space-y-4 text-sm">
+                            <div class="flex items-center"><span class="timeline-dot"></span> <strong>01/03/25:</strong> Firma de Contrato.</div>
+                            <div class="flex items-center"><span class="timeline-dot"></span> <strong>22/09/25:</strong> Cambio de cuenta bancaria.</div>
+                            <div class="flex items-center"><span class="timeline-dot" style="background:#262a36"></span> <strong>30/10/25:</strong> Fecha original de entrega.</div>
+                            <div class="flex items-center"><span class="timeline-dot"></span> <strong>11/11/25:</strong> Notificación de retraso.</div>
+                            <div class="flex items-center"><span class="timeline-dot" style="background:#Ffbc06"></span> <strong>Mar/Abr 26:</strong> Nueva ventana de entrega.</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Diagnóstico -->
+            <section id="diagnostico" class="mb-12 scroll-mt-24">
+                <div class="highlight-yellow p-8 rounded-2xl shadow-xl">
+                    <h3 class="text-2xl font-black mb-4 flex items-center gap-2">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        6. Diagnóstico de Estado
+                    </h3>
+                    <p class="text-lg leading-relaxed mb-6">
+                        <strong>Nota Crítica:</strong> El contrato estipula en su cláusula TERCERA que el vendedor tiene una prórroga de <strong>180 días naturales</strong> en caso de fuerza mayor. El retraso anunciado al segundo bimestre de 2026 parece alinearse con este periodo de gracia si se considera la fecha original de octubre 2025. 
+                    </p>
+                    <p class="text-md opacity-90 italic">
+                        *Alerta: Se debe vigilar que la entrega física no exceda los 20 días posteriores a la nueva fecha de escrituración.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Recomendaciones -->
+            <section id="recomendaciones" class="mb-12 scroll-mt-24">
+                <div class="card-doxus p-8 border-t-8 border-[#262a36]">
+                    <h3 class="text-2xl font-bold mb-6 text-[#262a36] flex items-center gap-3">
+                        <span class="text-[#d49f20]">7.</span> Recomendaciones Estratégicas
+                    </h3>
+                    <div class="space-y-6">
+                        <div class="flex gap-4">
+                            <div class="flex-shrink-0 w-8 h-8 bg-[#262a36] text-white rounded-full flex items-center justify-center font-bold">1</div>
+                            <p class="text-gray-700 leading-relaxed">Revisar etapa de obra con la desarrolladora para validar el avance físico real vs. el cronograma proyectado.</p>
+                        </div>
+                        <div class="flex gap-4">
+                            <div class="flex-shrink-0 w-8 h-8 bg-[#262a36] text-white rounded-full flex items-center justify-center font-bold">2</div>
+                            <p class="text-gray-700 leading-relaxed">Considerando que el periodo de entrega se ha superado en un par de ocasiones, se recomienda revisar con el desarrollador el <strong>pago de la pena convencional (10.00%)</strong> o celebrar algún convenio modificatorio a cambio de alguna amenidad adicional o reducción en costos de los acabados de la unidad.</p>
+                        </div>
+                        <div class="flex gap-4">
+                            <div class="flex-shrink-0 w-8 h-8 bg-[#d49f20] text-white rounded-full flex items-center justify-center font-bold">3</div>
+                            <p class="text-gray-700 leading-relaxed">En caso de negativa por parte del desarrollador, queda abierta la opción de acudir a <strong>PROFECO</strong> para solicitar formalmente el cumplimiento del contrato y las compensaciones legales correspondientes.</p>
+                        </div>
+                        <div class="flex gap-4">
+                            <div class="flex-shrink-0 w-8 h-8 bg-red-600 text-white rounded-full flex items-center justify-center font-bold">4</div>
+                            <p class="text-gray-700 leading-relaxed">Como última instancia, acudir a <strong>tribunales mercantiles y/o civiles</strong> para solicitar la rescisión del contrato con la devolución íntegra de las cantidades pagadas más los intereses y penas aplicables.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <footer class="bg-[#262a36] text-white py-12 px-6">
+            <div class="max-w-5xl mx-auto text-center flex flex-col items-center">
+                <p class="text-sm text-gray-400 mb-6">Esta es una versión ejecutiva de un dictamen más grande.</p>
                 
-                <!-- Hitos -->
-                <div id="hitos" class="card-doxus p-6">
-                    <h4 class="font-bold mb-4 text-[#262a36]">5. Línea de Tiempo y Hitos</h4>
-                    <div class="space-y-4 text-sm">
-                        <div class="flex items-center"><span class="timeline-dot"></span> <strong>01/03/25:</strong> Firma de Contrato.</div>
-                        <div class="flex items-center"><span class="timeline-dot"></span> <strong>22/09/25:</strong> Cambio de cuenta bancaria.</div>
-                        <div class="flex items-center"><span class="timeline-dot" style="background:#262a36"></span> <strong>30/10/25:</strong> Fecha original de entrega.</div>
-                        <div class="flex items-center"><span class="timeline-dot"></span> <strong>11/11/25:</strong> Notificación de retraso.</div>
-                        <div class="flex items-center"><span class="timeline-dot" style="background:#Ffbc06"></span> <strong>Mar/Abr 26:</strong> Nueva ventana de entrega.</div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Diagnóstico (Tarjeta #6) -->
-        <section id="diagnostico" class="mb-12">
-            <div class="highlight-yellow p-8 rounded-2xl shadow-xl">
-                <h3 class="text-2xl font-black mb-4 flex items-center gap-2">
-                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    6. Diagnóstico de Estado
-                </h3>
-                <p class="text-lg leading-relaxed mb-6">
-                    <strong>Nota Crítica:</strong> El contrato estipula en su cláusula TERCERA que el vendedor tiene una prórroga de <strong>180 días naturales</strong> en caso de fuerza mayor. El retraso anunciado al segundo bimestre de 2026 parece alinearse con este periodo de gracia si se considera la fecha original de octubre 2025. 
-                </p>
-                <p class="text-md opacity-90 italic">
-                    *Alerta: Se debe vigilar que la entrega física no exceda los 20 días posteriores a la nueva fecha de escrituración.
+                <img src="logo.png" alt="Logo" class="logo-img mb-4 grayscale brightness-200" onerror="this.style.display='none';">
+                
+                <div class="w-12 h-1 bg-[#Ffbc06] mb-6"></div>
+                <p class="font-bold text-lg tracking-widest uppercase">Maximiliamo Aréchiga-Morales</p>
+                <p class="text-xs text-gray-500 uppercase tracking-widest mt-2">
+                    Copyright de Doxus - Todos los derechos reservados.
                 </p>
             </div>
-        </section>
+        </footer>
+    </div>
 
-        <!-- Recomendaciones (Tarjeta #7) -->
-        <section id="recomendaciones" class="mb-12">
-            <div class="card-doxus p-8 border-t-8 border-[#262a36]">
-                <h3 class="text-2xl font-bold mb-6 text-[#262a36] flex items-center gap-3">
-                    <span class="text-[#d49f20]">7.</span> Recomendaciones Estratégicas
-                </h3>
-                <div class="space-y-6">
-                    <div class="flex gap-4">
-                        <div class="flex-shrink-0 w-8 h-8 bg-[#262a36] text-white rounded-full flex items-center justify-center font-bold">1</div>
-                        <p class="text-gray-700 leading-relaxed">Revisar etapa de obra con la desarrolladora para validar el avance físico real vs. el cronograma proyectado.</p>
-                    </div>
-                    <div class="flex gap-4">
-                        <div class="flex-shrink-0 w-8 h-8 bg-[#262a36] text-white rounded-full flex items-center justify-center font-bold">2</div>
-                        <p class="text-gray-700 leading-relaxed">Considerando que el periodo de entrega se ha superado en un par de ocasiones, se recomienda revisar con el desarrollador el <strong>pago de la pena convencional (10.00%)</strong> o celebrar algún convenio modificatorio a cambio de alguna amenidad adicional o reducción en costos de los acabados de la unidad.</p>
-                    </div>
-                    <div class="flex gap-4">
-                        <div class="flex-shrink-0 w-8 h-8 bg-[#d49f20] text-white rounded-full flex items-center justify-center font-bold">3</div>
-                        <p class="text-gray-700 leading-relaxed">En caso de negativa por parte del desarrollador, queda abierta la opción de acudir a <strong>PROFECO</strong> para solicitar formalmente el cumplimiento del contrato y las compensaciones legales correspondientes.</p>
-                    </div>
-                    <div class="flex gap-4">
-                        <div class="flex-shrink-0 w-8 h-8 bg-red-600 text-white rounded-full flex items-center justify-center font-bold">4</div>
-                        <p class="text-gray-700 leading-relaxed">Como última instancia, acudir a <strong>tribunales mercantiles y/o civiles</strong> para solicitar la rescisión del contrato con la devolución íntegra de las cantidades pagadas más los intereses y penas aplicables.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+    <script>
+        function checkPassword() {
+            const pass = document.getElementById('pass-input').value;
+            const errorMsg = document.getElementById('error-msg');
+            const lockScreen = document.getElementById('lock-screen');
+            const mainContent = document.getElementById('main-content');
 
-    </main>
+            if (pass === 'Borboleta') {
+                lockScreen.style.opacity = '0';
+                setTimeout(() => {
+                    lockScreen.style.display = 'none';
+                    mainContent.style.visibility = 'visible';
+                    mainContent.style.opacity = '1';
+                    document.body.style.overflow = 'auto';
+                }, 500);
+            } else {
+                errorMsg.classList.remove('opacity-0');
+                errorMsg.classList.add('opacity-100');
+                document.getElementById('pass-input').value = '';
+                document.getElementById('pass-input').focus();
+                
+                setTimeout(() => {
+                    errorMsg.classList.remove('opacity-100');
+                    errorMsg.classList.add('opacity-0');
+                }, 3000);
+            }
+        }
 
-    <!-- Footer -->
-    <footer class="bg-[#262a36] text-white py-12 px-6">
-        <div class="max-w-5xl mx-auto text-center flex flex-col items-center">
-            <p class="text-sm text-gray-400 mb-6">Esta es una versión ejecutiva de un dictamen más grande.</p>
-            
-            <!-- Logo Footer -->
-            <img src="logo.png" alt="Doxus Logo" class="logo-img mb-4 grayscale brightness-200" onerror="this.style.display='none';">
-            
-            <div class="w-12 h-1 bg-[#Ffbc06] mb-6"></div>
-            <p class="font-bold text-lg tracking-widest">DOXUS</p>
-            <p class="text-xs text-gray-500 uppercase tracking-widest mt-2">
-                Copyright de Doxus por Maximiliano Aréchiga-Morales.
-            </p>
-        </div>
-    </footer>
+        document.getElementById('pass-input').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                checkPassword();
+            }
+        });
+    </script>
 
 </body>
 </html>
