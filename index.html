@@ -26,11 +26,11 @@
             overflow: hidden; /* Bloquea el scroll hasta que se autentique */
         }
 
-        /* Capa de Seguridad */
+        /* Capa de Seguridad con Fondo Oscuro */
         #lock-screen {
             position: fixed;
             inset: 0;
-            background-color: var(--doxus-bg);
+            background-color: var(--doxus-text); /* Fondo oscuro para resaltar logo */
             z-index: 9999;
             display: flex;
             flex-direction: column;
@@ -55,10 +55,13 @@
             font-size: 1rem;
             outline: none;
             transition: border-color 0.2s;
+            background-color: rgba(255, 255, 255, 0.05);
+            color: white;
         }
 
         .password-input:focus {
             border-color: var(--doxus-accent);
+            background-color: rgba(255, 255, 255, 0.1);
         }
 
         /* Contenido principal */
@@ -73,7 +76,7 @@
             position: sticky;
             top: 0;
             z-index: 50;
-            background-color: #262a36; /* Azul Doxus solicitado */
+            background-color: #262a36;
             border-bottom: 3px solid var(--doxus-accent);
         }
 
@@ -146,6 +149,13 @@
             object-fit: contain;
         }
 
+        /* Logo más grande para el Login */
+        .logo-img-large {
+            max-height: 120px;
+            width: auto;
+            object-fit: contain;
+        }
+
         .btn-doxus {
             background-color: var(--doxus-accent);
             color: var(--doxus-text);
@@ -166,16 +176,17 @@
     <!-- Pantalla de Bloqueo -->
     <div id="lock-screen">
         <div class="login-card">
-            <img src="logo.png" alt="Doxus Logo" class="logo-img mx-auto mb-6" onerror="this.style.display='none'; document.getElementById('lock-fallback-logo').style.display='flex';">
-            <div id="lock-fallback-logo" style="display:none;" class="w-16 h-16 bg-[#Ffbc06] rounded-xl items-center justify-center font-bold text-2xl mx-auto mb-6 text-[#262a36]">D</div>
+            <!-- Logo más grande en pantalla de inicio -->
+            <img src="logo.png" alt="Doxus Logo" class="logo-img-large mx-auto mb-8" onerror="this.style.display='none'; document.getElementById('lock-fallback-logo').style.display='flex';">
+            <div id="lock-fallback-logo" style="display:none;" class="w-20 h-20 bg-[#Ffbc06] rounded-2xl items-center justify-center font-bold text-3xl mx-auto mb-8 text-[#262a36]">D</div>
             
-            <h2 class="text-2xl font-bold text-[#262a36]">Acceso Restringido</h2>
-            <p class="text-gray-500 text-sm mt-2">Por favor, ingrese la contraseña para visualizar este dictamen ejecutivo.</p>
+            <h2 class="text-3xl font-bold text-white">Acceso Restringido</h2>
+            <p class="text-gray-400 text-sm mt-3">Por favor, ingrese la contraseña para visualizar este dictamen ejecutivo confidencial.</p>
             
             <input type="password" id="pass-input" class="password-input" placeholder="Contraseña" autofocus>
             
-            <button onclick="checkPassword()" class="btn-doxus shadow-lg">Entrar</button>
-            <p id="error-msg" class="text-red-500 text-xs mt-4 opacity-0 transition-opacity">Contraseña incorrecta. Intente de nuevo.</p>
+            <button onclick="checkPassword()" class="btn-doxus shadow-lg text-lg">Entrar</button>
+            <p id="error-msg" class="text-red-400 text-sm mt-4 opacity-0 transition-opacity">Contraseña incorrecta. Intente de nuevo.</p>
         </div>
     </div>
 
@@ -191,7 +202,6 @@
                 <img src="logo.png" alt="Logo" class="logo-img" onerror="this.style.display='none'; document.getElementById('fallback-logo').style.display='flex';">
                 <div id="fallback-logo" style="display:none;" class="w-10 h-10 bg-[#Ffbc06] rounded-md items-center justify-center font-bold text-[#262a36]">D</div>
                 
-                <!-- Retirado nombre DOXUS, solo queda el identificador -->
                 <span class="font-bold text-xl tracking-tighter">
                     <span class="font-light text-gray-400">| DICTAMEN</span>
                 </span>
@@ -404,7 +414,7 @@
                 <img src="logo.png" alt="Logo" class="logo-img mb-4 grayscale brightness-200" onerror="this.style.display='none';">
                 
                 <div class="w-12 h-1 bg-[#Ffbc06] mb-6"></div>
-                <p class="font-bold text-lg tracking-widest uppercase">Maximiliamo Aréchiga-Morales</p>
+                <p class="font-bold text-lg tracking-widest uppercase">Maximiliano Aréchiga-Morales</p>
                 <p class="text-xs text-gray-500 uppercase tracking-widest mt-2">
                     Copyright de Doxus - Todos los derechos reservados.
                 </p>
